@@ -3,6 +3,7 @@ from sqlalchemy.dialects.postgresql import ARRAY
 from sqlalchemy.sql import func
 from .base import Base
 
+# SQLAlchemy model for the 'offers' table
 class Offer(Base):
     __tablename__ = "offers"
 
@@ -13,6 +14,7 @@ class Offer(Base):
     created_at = Column(DateTime(timezone=True), server_default=func.now())
 
 
+# SQLAlchemy model for the 'Leads' table
 class Lead(Base):
     __tablename__ = "Leads"
     
