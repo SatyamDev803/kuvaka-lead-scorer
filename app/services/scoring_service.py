@@ -8,8 +8,9 @@ from app.core.config import settings
 genai.configure(api_key=settings.GEMINI_API_KEY)
 model = genai.GenerativeModel('gemini-2.5-flash')
 
+
+# Calculate the score based on predefined rule
 def calculate_rule_score(lead: models.Lead) -> int:
-    # Calculate the score based on predefined rule
     score = 0
     
     # Rule 1 Role relevance max 20
@@ -32,6 +33,8 @@ def calculate_rule_score(lead: models.Lead) -> int:
         
     return score
 
+
+# Gets a score, intent, and reasoning from the Gemini AI model
 async def get_ai_score_and_reasoning(lead: models.Lead, offer: models.Offer) -> Dict[str, Any]:
     prompt = f"""
     You are an expert B2B sales development representative. Given the product offer and prospect information, classify the prospect's buying intent as High, Medium, or Low. Then, provide a concise, one-sentence explanation for your classification.
@@ -59,6 +62,7 @@ async def get_ai_score_and_reasoning(lead: models.Lead, offer: models.Offer) -> 
         
         result = json.loads(response.text)
         
+        # Map the text-based intent to a numerical score
         intent_map = {"High": 50, "Medium": 30, "Low": 10}
         result['score'] = intent_map.get(result.get('intent'), 0)
         
