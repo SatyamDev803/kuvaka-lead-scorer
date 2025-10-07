@@ -16,19 +16,6 @@ This project is a backend service that accepts product information and a CSV of 
 
 ---
 
-## Tech Stack
-
--   **Framework:** FastAPI
--   **Database:** PostgreSQL with SQLAlchemy (Async)
--   **Async Driver:** `asyncpg`
--   **Migrations:** Alembic
--   **AI:** Google Gemini API (`gemini-flash`)
--   **Validation:** Pydantic
--   **Testing:** Pytest
--   **Containerization:** Docker
-
----
-
 ## Setup and Installation
 
 ### 1. Local Setup (with Poetry)
@@ -41,7 +28,7 @@ This project is a backend service that accepts product information and a CSV of 
 **Steps:**
 1.  **Clone the repository:**
     ```bash
-    git clone <your-repo-url>
+    git clone https://github.com/SatyamDev803/kuvaka-lead-scorer.git
     cd kuvaka-assignment
     ```
 2.  **Create a `.env` file** in the root directory and add your environment variables:
@@ -64,22 +51,38 @@ This project is a backend service that accepts product information and a CSV of 
 -   Docker Desktop
 
 **Steps:**
-1.  Ensure your `.env` file is created as described above.
-2.  Build and run the container (a `docker-compose.yml` would be ideal for production, but this works for a quick start):
-    ```bash
-    docker build -t lead-scorer .
-    docker run -p 8000:8000 --env-file .env lead-scorer
-    ```
+
+1. Create a `.env.docker` file for the container. This file must use host.docker.internal for the database connection.
+```
+DATABASE_URL=postgresql+asyncpg://user:password@host.docker.internal:5432/dbname
+GEMINI_API_KEY=your_google_ai_api_key
+```
+2. Build the Docker image:
+
+```bash
+
+docker build -t kuvaka-app .
+```
 
 ---
 
 ## Running the Application
 
-Once set up, run the FastAPI server:
+**Local**
+
+Use the following command to run the server locally.
 ```bash
 poetry run uvicorn main:app --reload
 ```
 The API will be available at `http://127.0.0.1:8000`, with interactive documentation at `http://1227.0.0.1:8000/docs`.
+
+**Docker**
+
+Use this command to run the application inside a container. It will load configuration from the .env.docker file.
+```bash
+docker run -p 8000:8000 --env-file .env.docker kuvaka-app
+```
+The API will be available at `http://127.0.0.1:8000`.
 
 ---
 
